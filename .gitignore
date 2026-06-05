@@ -1,0 +1,7 @@
+.gemini/
+.obsidian/workspace.json
+node_modules/
+dist/
+*.db-shm
+*.db-wal
+*.log
