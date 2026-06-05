@@ -10,7 +10,7 @@
 *   **版本控制**：Git
 
 ## 开发进度
-*   **2026-06-05**：项目初始化，创建基础开发文档（`CLAUDE.md`、`MEMORY.md`、`PRD.md`），初始化 Git 仓库及 `.gitignore`。启动视觉伴侣（Visual Companion），开始进行一年级口算练习纸生成器的设计脑暴与讨论。
+*   **2026-06-05**：项目初始化，创建基础开发文档（`CLAUDE.md`、`MEMORY.md`、`PRD.md`），初始化 Git 仓库及 `.gitignore`。启动视觉伴侣（Visual Companion），完成页面排版、网格对齐、无序号设计讨论，并正式编写与提交了 [2026-06-05-mathsheety-design.md](file:///Users/luluen/ai-project/MathSheety/docs/superpowers/specs/2026-06-05-mathsheety-design.md) 设计文档。
 
 ## 经验教训与避坑指南
 *   (暂无)
