@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathSheety - 口算练习纸生成器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="config-panel">
+    <div class="header-title">
+      <h1>MathSheety</h1>
+      <p>口算练习纸生成工具</p>
+    </div>
+    <div class="config-options">
+      <div class="config-group">
+        <span class="config-label">题型</span>
+        <div class="radio-group">
+          <label><input type="radio" name="op-type" value="mix" checked> 加减混合</label>
+          <label><input type="radio" name="op-type" value="add"> 仅加法</label>
+          <label><input type="radio" name="op-type" value="sub"> 仅减法</label>
+        </div>
+      </div>
+      <div class="config-group">
+        <span class="config-label">数字范围</span>
+        <div class="radio-group">
+          <label><input type="radio" name="range" value="10"> 10以内</label>
+          <label><input type="radio" name="range" value="20" checked> 20以内</label>
+          <label><input type="radio" name="range" value="100"> 100以内</label>
+        </div>
+      </div>
+      <div class="config-group">
+        <span class="config-label">规则设置</span>
+        <div class="checkbox-group">
+          <label><input type="checkbox" id="allow-carry" checked> 允许加法进位</label>
+          <label><input type="checkbox" id="allow-borrow" checked> 允许减法退位</label>
+        </div>
+      </div>
+      <div class="config-group">
+        <span class="config-label">题目数量</span>
+        <select id="questions-count">
+          <option value="20">20 题</option>
+          <option value="50" selected>50 题</option>
+          <option value="100">100 题</option>
+        </select>
+      </div>
+    </div>
+    <div class="actions-bar">
+      <button id="btn-generate" class="btn btn-primary">生成练习纸</button>
+      <button id="btn-toggle-answer" class="btn btn-secondary">显示答案</button>
+      <button id="btn-print" class="btn btn-accent">打印练习纸</button>
+    </div>
+  </header>
+
+  <main class="preview-area">
+    <div class="sheet-container" id="sheet-container">
+      <div class="sheet-header">
+        <h2 id="sheet-title">口算练习纸</h2>
+        <div class="student-info">
+          <span>姓名：___________</span>
+          <span>日期：2026年__月__日</span>
+          <span>用时：__分__秒</span>
+          <span>成绩：_____/_____</span>
+        </div>
+      </div>
+      <div class="sheet-grid" id="sheet-grid">
+        <!-- 题目由 JavaScript 动态生成并填充 -->
+      </div>
+      <div class="sheet-footer">
+        <span>MathSheety 智能生成</span>
+        <span>A4 规格标准排版 (210mm × 297mm)</span>
+      </div>
+    </div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
