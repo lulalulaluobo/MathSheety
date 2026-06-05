@@ -110,7 +110,7 @@ if (typeof window !== 'undefined') {
             const expr = `${q.a} ${q.op} ${q.b}`;
             rowElement.innerHTML = `
               <span class="formula-expr">${expr}</span>
-              <span class="formula-ans">= <span class="ans-val">${q.res}</span>__</span>
+              <span class="formula-ans">= <span class="ans-val">${q.res}</span></span>
             `;
             colElement.appendChild(rowElement);
           }

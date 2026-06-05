@@ -226,6 +226,13 @@ select {
   white-space: nowrap;
 }
 
+/* 答案与书写框样式：始终占用 2.5rem 宽度作为留白，不画下划线 */
+.ans-val {
+  display: inline-block;
+  width: 2.5rem;
+  text-align: left;
+}
+
 /* 答案显隐控制：默认隐藏答案，当带 .show-answers 类时显示答案结果 */
 .sheet-container:not(.show-answers) .ans-val {
   visibility: hidden;
