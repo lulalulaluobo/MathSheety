@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Outfit:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg-primary: #FAF6F0; /* 护眼象牙白 */
+  --bg-panel: #FFFFFF;
+  --border-light: #E6DFD5;
+  --text-dark: #4A433D;
+  --text-muted: #8F857B;
+  --accent-coral: #C88C6B; /* 珊瑚橙 */
+  --accent-green: #8EA68B; /* 森绿 */
+  --accent-blue: #6B9EC8;  /* 科技蓝 */
+  
+  --font-ui: 'Outfit', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-dark);
+  font-family: var(--font-ui);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-bottom: 3rem;
+}
+
+/* 配置面板样式 */
+.config-panel {
+  width: 100%;
+  max-width: 794px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-light);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  box-shadow: 0 4px 20px rgba(74, 67, 61, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.header-title h1 {
+  font-size: 1.5rem;
+  color: var(--accent-coral);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+.header-title p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.config-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.25rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1rem;
+}
+
+.config-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.config-label {
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.radio-group, .checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+}
+.radio-group label, .checkbox-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+select {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  padding: 0.45rem;
+  color: var(--text-dark);
+  font-family: var(--font-ui);
+  font-size: 0.9rem;
+  outline: none;
+  cursor: pointer;
+}
+
+/* 动作按钮区 */
+.actions-bar {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-light);
+  padding-top: 1rem;
+}
+
+.btn {
+  border: none;
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-family: var(--font-ui);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.btn-primary { background: var(--accent-coral); color: white; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-secondary { background: var(--accent-green); color: white; }
+.btn-secondary:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-accent { background: var(--accent-blue); color: white; }
+.btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
+
+/* A4 练习纸容器 */
+.preview-area {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.sheet-container {
+  width: 794px; /* 标准 A4 像素宽度 */
+  height: 1123px; /* 标准 A4 像素高度 */
+  background: #FFFFFF;
+  border: 1px solid #D1C9BE;
+  border-radius: 4px;
+  box-shadow: 0 12px 36px rgba(74, 67, 61, 0.08);
+  padding: 4.5rem 3.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.sheet-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 2px double var(--border-light);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+.sheet-header h2 {
+  font-size: 2rem;
+  letter-spacing: 0.3em;
+  color: #332E2A;
+  font-weight: 700;
+}
+.student-info {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.95rem;
+  color: #5C544E;
+  font-weight: 500;
+}
+.student-info span {
+  white-space: nowrap;
+}
+
+/* 算式网格布局 */
+.sheet-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr 1px 1fr 1px 1fr;
+  gap: 0 1.5rem;
+  flex-grow: 1;
+  margin-bottom: 2rem;
+  align-content: space-between;
+}
+
+/* 每一列内部容器 */
+.grid-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  min-height: 750px;
+}
+
+/* 列分隔线 */
+.grid-divider {
+  border-left: 1px dashed var(--border-light);
+  height: 100%;
+}
+
+/* 每一个算式算子对齐样式 */
+.formula-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #2C2724;
+  line-height: 1.8;
+}
+
+.formula-expr {
+  white-space: nowrap;
+}
+
+.formula-ans {
+  white-space: nowrap;
+}
+
+/* 答案显隐控制：默认隐藏答案，当带 .show-answers 类时显示答案结果 */
+.sheet-container:not(.show-answers) .ans-val {
+  visibility: hidden;
+}
+.sheet-container.show-answers .ans-val {
+  visibility: visible;
+  color: var(--accent-coral); /* 答案显示为淡橙色区分 */
+}
+
+.sheet-footer {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #AEA59A;
+  border-top: 1px dashed var(--border-light);
+  padding-top: 1rem;
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* ===== A4 打印优化媒体查询 ===== */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    padding: 0;
+    margin: 0;
+  }
+  .config-panel {
+    display: none !important;
+  }
+  .sheet-container {
+    width: 100% !important;
+    height: 100vh !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 2.5rem 2rem !important; /* 打印边距适当紧凑 */
+    margin: 0 !important;
+  }
+}
