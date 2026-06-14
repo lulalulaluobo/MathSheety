@@ -509,8 +509,8 @@ function renderWorksheet() {
   const sheetGrid = document.getElementById('sheet-grid');
   sheetGrid.innerHTML = '';
 
-  // 元角分题型排版采用 3 列
-  const colCount = 3;
+  // 元角分题型排版采用 2 列
+  const colCount = 2;
   const itemsPerCol = Math.ceil(questions.length / colCount);
 
   for (let col = 0; col < colCount; col++) {
