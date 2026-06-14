@@ -70,6 +70,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - **Git 仓库**：项目必须使用 git 进行版本控制管理。
 - **.gitignore 校验**：严格排除不必要的本地数据及模型运行残留。
 - **CodeGraph 实时同步**：代码库索引通过 CodeGraph 服务维护。**每次执行 git commit 提交代码后，必须紧接着进行一次 codegraph 同步**。
+- 并且更新memory.md，记录这次开发进度和更新内容。
 
 ### 5.3 搜索工具效率 (Search Optimization)
 - **rg 搜索优先**：调用工具进行内容检索时，必须优先使用 `grep_search`（基于 ripgrep/rg）进行高效文本定位，禁止在没有具体范围时使用低效的逐个文件加载阅读循环。

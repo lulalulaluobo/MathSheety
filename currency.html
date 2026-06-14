@@ -3,42 +3,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MathSheety - 口算练习纸生成器</title>
+  <title>MathSheety - 元角分换算口算练习纸</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <nav class="nav-tabs">
-    <a href="index.html" class="nav-tab active">口算练习</a>
-    <a href="currency.html" class="nav-tab">元角分换算</a>
+    <a href="index.html" class="nav-tab">口算练习</a>
+    <a href="currency.html" class="nav-tab active">元角分换算</a>
   </nav>
 
   <header class="config-panel">
     <div class="header-title">
       <h1>MathSheety</h1>
-      <p>口算练习纸生成工具</p>
+      <p>元角分口算练习纸生成工具</p>
     </div>
     <div class="config-options">
       <div class="config-group">
         <span class="config-label">题型</span>
         <div class="radio-group">
-          <label><input type="radio" name="op-type" value="mix" checked> 加减混合</label>
-          <label><input type="radio" name="op-type" value="add"> 仅加法</label>
-          <label><input type="radio" name="op-type" value="sub"> 仅减法</label>
+          <label><input type="radio" name="op-type" value="mix" checked> 混合练习</label>
+          <label><input type="radio" name="op-type" value="convert"> 单位换算</label>
+          <label><input type="radio" name="op-type" value="arithmetic"> 币值计算</label>
+          <label><input type="radio" name="op-type" value="exchange"> 等值兑换</label>
         </div>
       </div>
       <div class="config-group">
-        <span class="config-label">数字范围</span>
+        <span class="config-label">最大元面额</span>
         <div class="radio-group">
-          <label><input type="radio" name="range" value="10"> 10以内</label>
-          <label><input type="radio" name="range" value="20" checked> 20以内</label>
-          <label><input type="radio" name="range" value="100"> 100以内</label>
+          <label><input type="radio" name="max-yuan" value="10"> 10 元以内</label>
+          <label><input type="radio" name="max-yuan" value="50"> 50 元以内</label>
+          <label><input type="radio" name="max-yuan" value="100" checked> 100 元以内</label>
         </div>
       </div>
       <div class="config-group">
-        <span class="config-label">规则设置</span>
+        <span class="config-label">范围设置</span>
         <div class="checkbox-group">
-          <label><input type="checkbox" id="allow-carry" checked> 允许加法进位</label>
-          <label><input type="checkbox" id="allow-borrow" checked> 允许减法退位</label>
+          <label><input type="checkbox" id="include-jiao" checked> 包含角 (1角/5角)</label>
+          <label><input type="checkbox" id="include-fen" checked> 包含分 (1分)</label>
         </div>
       </div>
       <div class="config-group">
@@ -58,9 +59,9 @@
   </header>
 
   <main class="preview-area">
-    <div class="sheet-container" id="sheet-container">
+    <div class="sheet-container currency-sheet" id="sheet-container">
       <div class="sheet-header">
-        <h2 id="sheet-title">口算练习纸</h2>
+        <h2 id="sheet-title">元角分口算练习纸</h2>
         <div class="student-info">
           <span>姓名：___________</span>
           <span>日期：2026年__月__日</span>
@@ -68,7 +69,7 @@
           <span>成绩：_____/_____</span>
         </div>
       </div>
-      <div class="sheet-grid" id="sheet-grid">
+      <div class="sheet-grid col-3" id="sheet-grid">
         <!-- 题目由 JavaScript 动态生成并填充 -->
       </div>
       <div class="sheet-footer">
@@ -77,6 +78,6 @@
       </div>
     </div>
   </main>
-  <script src="app.js"></script>
+  <script src="currency.js"></script>
 </body>
 </html>
