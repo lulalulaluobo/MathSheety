@@ -92,117 +92,7 @@ function generateConversion(maxYuan, includeJiao) {
 }
 
 /**
- * 2. 币值加减法计算生成
- */
-function generateArithmetic(maxYuan, includeJiao) {
-  const validYuans = YUAN_DENOMINATIONS.filter(v => v <= maxYuan);
-  const templates = [];
-
-  // A1: X元 + Y元 = ( )元
-  templates.push(() => {
-    // 确保加数和被加数和在合理范围内，且使用面额或常见组合
-    const a = randomChoice(validYuans.filter(v => v < maxYuan));
-    const b = randomChoice(validYuans.filter(v => v <= maxYuan - a));
-    return {
-      expr: `${a}元 + ${b}元 = `,
-      ansHtml: `( <span class="ans-val">${a + b}</span> )元`,
-      key: `arith_y_add_${a}_${b}`
-    };
-  });
-
-  // A2: X元 - Y元 = ( )元
-  templates.push(() => {
-    const a = randomChoice(validYuans.filter(v => v > 1));
-    const b = randomChoice(validYuans.filter(v => v < a));
-    return {
-      expr: `${a}元 - ${b}元 = `,
-      ansHtml: `( <span class="ans-val">${a - b}</span> )元`,
-      key: `arith_y_sub_${a}_${b}`
-    };
-  });
-
-  // A3: X角 + Y角 = ( )角 (包含角)
-  if (includeJiao) {
-    templates.push(() => {
-      const a = randomChoice([1, 2, 5]);
-      const b = randomChoice([1, 2, 5]);
-      return {
-        expr: `${a}角 + ${b}角 = `,
-        ansHtml: `( <span class="ans-val">${a + b}</span> )角`,
-        key: `arith_j_add_${a}_${b}`
-      };
-    });
-  }
-
-  // A4: X角 - Y角 = ( )角 (包含角)
-  if (includeJiao) {
-    templates.push(() => {
-      const a = randomChoice([2, 5, 6]);
-      const b = randomChoice([1, 2, 5].filter(v => v < a));
-      return {
-        expr: `${a}角 - ${b}角 = `,
-        ansHtml: `( <span class="ans-val">${a - b}</span> )角`,
-        key: `arith_j_sub_${a}_${b}`
-      };
-    });
-  }
-
-  // A5: X元 + Y角 = ( )元( )角 (包含角)
-  if (includeJiao) {
-    templates.push(() => {
-      const yuan = randomChoice(validYuans.filter(v => v <= 20));
-      const jiao = randomChoice([1, 2, 5]);
-      return {
-        expr: `${yuan}元 + ${jiao}角 = `,
-        ansHtml: `( <span class="ans-val">${yuan}</span> )元( <span class="ans-val">${jiao}</span> )角`,
-        key: `arith_yj_mix_add_${yuan}_${jiao}`
-      };
-    });
-  }
-
-  // A6: X元Y角 - Z角 = ( )元( )角 (包含角，无退位)
-  if (includeJiao) {
-    templates.push(() => {
-      const yuan = randomChoice(validYuans.filter(v => v <= 10));
-      const jiao = randomChoice([5, 6, 8]);
-      const z = randomChoice([1, 2, 5].filter(v => v < jiao));
-      return {
-        expr: `${yuan}元${jiao}角 - ${z}角 = `,
-        ansHtml: `( <span class="ans-val">${yuan}</span> )元( <span class="ans-val">${jiao - z}</span> )角`,
-        key: `arith_yj_mix_sub_no_borrow_${yuan}_${jiao}_${z}`
-      };
-    });
-  }
-
-  // A7: X元 - Y角 = ( )角 或 ( )元( )角 (包含角，带退位)
-  if (includeJiao) {
-    templates.push(() => {
-      const yuan = randomChoice(validYuans.filter(v => v <= 10));
-      const jiao = randomChoice([1, 2, 5]);
-      if (yuan === 1) {
-        // 1元 - X角 = ( )角
-        return {
-          expr: `1元 - ${jiao}角 = `,
-          ansHtml: `( <span class="ans-val">${10 - jiao}</span> )角`,
-          key: `arith_yj_mix_sub_borrow_1_${jiao}`
-        };
-      } else {
-        // X元 - Y角 = (X-1)元(10-Y)角
-        return {
-          expr: `${yuan}元 - ${jiao}角 = `,
-          ansHtml: `( <span class="ans-val">${yuan - 1}</span> )元( <span class="ans-val">${10 - jiao}</span> )角`,
-          key: `arith_yj_mix_sub_borrow_x_${yuan}_${jiao}`
-        };
-      }
-    });
-  }
-
-  const t = randomChoice(templates);
-  return t();
-}
-
-/**
- * 3. 面额等值兑换题目生成
+ * 2. 面额等值兑换题目生成
  */
 function generateExchange(maxYuan, includeJiao) {
   const templates = [];
@@ -302,17 +192,13 @@ function renderWorksheet() {
     // 题型分发
     if (opType === 'convert') {
       q = generateConversion(maxYuan, includeJiao);
-    } else if (opType === 'arithmetic') {
-      q = generateArithmetic(maxYuan, includeJiao);
     } else if (opType === 'exchange') {
       q = generateExchange(maxYuan, includeJiao);
     } else {
       // 混合
       const rand = Math.random();
-      if (rand < 0.4) {
+      if (rand < 0.5) {
         q = generateConversion(maxYuan, includeJiao);
-      } else if (rand < 0.8) {
-        q = generateArithmetic(maxYuan, includeJiao);
       } else {
         q = generateExchange(maxYuan, includeJiao);
       }
@@ -333,12 +219,10 @@ function renderWorksheet() {
     while (questions.length < count && protection < 200) {
       let q;
       if (opType === 'convert') q = generateConversion(maxYuan, includeJiao);
-      else if (opType === 'arithmetic') q = generateArithmetic(maxYuan, includeJiao);
       else if (opType === 'exchange') q = generateExchange(maxYuan, includeJiao);
       else {
         const rand = Math.random();
-        if (rand < 0.4) q = generateConversion(maxYuan, includeJiao);
-        else if (rand < 0.8) q = generateArithmetic(maxYuan, includeJiao);
+        if (rand < 0.5) q = generateConversion(maxYuan, includeJiao);
         else q = generateExchange(maxYuan, includeJiao);
       }
       questions.push(q);
@@ -443,7 +327,6 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     generateConversion,
-    generateArithmetic,
     generateExchange
   };
 }
