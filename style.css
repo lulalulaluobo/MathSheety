@@ -129,6 +129,8 @@ select {
 .btn-secondary:hover { opacity: 0.9; transform: translateY(-1px); }
 .btn-accent { background: var(--accent-blue); color: white; }
 .btn-accent:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-pdf { background: #9B8EA6; color: white; }
+.btn-pdf:hover { opacity: 0.9; transform: translateY(-1px); }
 
 /* A4 练习纸容器 */
 .preview-area {
@@ -307,6 +309,16 @@ select {
 }
 .sheet-container.show-answers.currency-sheet .ans-val {
   border-bottom-color: rgba(200, 140, 107, 0.3);
+}
+
+/* PDF 渲染专用样式覆盖 */
+.rendering-pdf .sheet-container {
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  width: 794px !important;
+  height: 1123px !important;
 }
 
 /* ===== A4 打印优化媒体查询 ===== */

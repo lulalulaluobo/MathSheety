@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MathSheety - 元角分换算口算练习纸</title>
   <link rel="stylesheet" href="style.css">
+  <!-- 引入 html2pdf.js 库用于导出 PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   <nav class="nav-tabs">
@@ -55,6 +57,7 @@
       <button id="btn-generate" class="btn btn-primary">生成练习纸</button>
       <button id="btn-toggle-answer" class="btn btn-secondary">显示答案</button>
       <button id="btn-print" class="btn btn-accent">打印练习纸</button>
+      <button id="btn-pdf" class="btn btn-pdf">导出 PDF</button>
     </div>
   </header>
 

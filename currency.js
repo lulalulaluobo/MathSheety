@@ -550,6 +550,7 @@ if (typeof window !== 'undefined') {
     const btnGenerate = document.getElementById('btn-generate');
     const btnToggleAnswer = document.getElementById('btn-toggle-answer');
     const btnPrint = document.getElementById('btn-print');
+    const btnPdf = document.getElementById('btn-pdf');
     const sheetContainer = document.getElementById('sheet-container');
 
     let showAnswers = false;
@@ -572,6 +573,25 @@ if (typeof window !== 'undefined') {
 
     btnPrint.addEventListener('click', () => {
       window.print();
+    });
+
+    btnPdf.addEventListener('click', () => {
+      document.body.classList.add('rendering-pdf');
+      const sheetTitle = document.getElementById('sheet-title').textContent.trim();
+      const opt = {
+        margin:       0,
+        filename:     `${sheetTitle}.pdf`,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2, useCORS: true },
+        jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(sheetContainer).save().then(() => {
+        document.body.classList.remove('rendering-pdf');
+      }).catch(err => {
+        console.error('PDF导出失败:', err);
+        document.body.classList.remove('rendering-pdf');
+      });
     });
 
     // 自动初始化渲染题目
