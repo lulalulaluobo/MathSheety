@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { generateAddition, generateSubtraction } = require('../app.js');
+const { generateAddition, generateSubtraction, generateMultiplication, generateDivision } = require('../app.js');
 
 test('generateAddition - no carry within 20', () => {
   const results = [];
@@ -24,6 +24,37 @@ test('generateSubtraction - no borrow within 20', () => {
     assert.ok(q.a >= q.b, `Minuend ${q.a} must be >= Subtrahend ${q.b}`);
     assert.ok((q.a % 10) >= (q.b % 10), `Subtraction a=${q.a}, b=${q.b} should not borrow`);
     assert.equal(q.a - q.b, q.res);
+    results.push(q);
+  }
+  // 确保生成的算式不是全部为 0，测试应当能够生成一些非零数
+  const hasNonZero = results.some(q => q.a > 0 || q.b > 0);
+  assert.ok(hasNonZero, "Should generate non-zero equations");
+});
+
+test('generateMultiplication - 九九表内 (因子 1..9)', () => {
+  const results = [];
+  for (let i = 0; i < 100; i++) {
+    const q = generateMultiplication();
+    assert.ok(q.a >= 1 && q.a <= 9, `Factor a=${q.a} out of 1..9`);
+    assert.ok(q.b >= 1 && q.b <= 9, `Factor b=${q.b} out of 1..9`);
+    assert.ok(q.res <= 81, `Product ${q.res} exceeds 81`);
+    assert.equal(q.a * q.b, q.res, `Multiplication a=${q.a}, b=${q.b} mismatch`);
+    results.push(q);
+  }
+  // 确保生成的算式不是全部为 0，测试应当能够生成一些非零数
+  const hasNonZero = results.some(q => q.a > 0 || q.b > 0);
+  assert.ok(hasNonZero, "Should generate non-zero equations");
+});
+
+test('generateDivision - 九九表内整除无余数 (除数、商均在 1..9)', () => {
+  const results = [];
+  for (let i = 0; i < 100; i++) {
+    const q = generateDivision();
+    assert.ok(q.a >= 1 && q.a <= 81, `Dividend a=${q.a} out of 1..81`);
+    assert.ok(q.b >= 1 && q.b <= 9, `Divisor b=${q.b} out of 1..9`);
+    assert.ok(q.res >= 1 && q.res <= 9, `Quotient ${q.res} out of 1..9`);
+    assert.equal(q.a % q.b, 0, `Division a=${q.a}, b=${q.b} has remainder`);
+    assert.equal(q.a / q.b, q.res, `Division a=${q.a}, b=${q.b} mismatch`);
     results.push(q);
   }
   // 确保生成的算式不是全部为 0，测试应当能够生成一些非零数

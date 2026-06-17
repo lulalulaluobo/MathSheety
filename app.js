@@ -23,7 +23,7 @@ function generateSubtraction(range, allowBorrow) {
     const a = Math.floor(Math.random() * (range + 1));
     const b = Math.floor(Math.random() * (a + 1));
     const res = a - b;
-    
+
     if (!allowBorrow) {
       if ((a % 10) < (b % 10)) {
         limit--;
@@ -35,10 +35,27 @@ function generateSubtraction(range, allowBorrow) {
   return { a: 5, b: 2, op: '-', res: 3 };
 }
 
+// 九九乘法表内乘法：因子 1..9，乘积不超过 81
+function generateMultiplication() {
+  const a = 1 + Math.floor(Math.random() * 9);
+  const b = 1 + Math.floor(Math.random() * 9);
+  return { a, b, op: '×', res: a * b };
+}
+
+// 九九乘法表内除法：除数、商均在 1..9，被除数 = 除数 × 商 保证整除无余数
+function generateDivision() {
+  const b = 1 + Math.floor(Math.random() * 9);
+  const q = 1 + Math.floor(Math.random() * 9);
+  const a = b * q;
+  return { a, b, op: '÷', res: q };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     generateAddition,
-    generateSubtraction
+    generateSubtraction,
+    generateMultiplication,
+    generateDivision
   };
 }
 
@@ -73,9 +90,18 @@ if (typeof window !== 'undefined') {
           formula = generateAddition(range, allowCarry);
         } else if (opType === 'sub') {
           formula = generateSubtraction(range, allowBorrow);
+        } else if (opType === 'mul') {
+          formula = generateMultiplication();
+        } else if (opType === 'div') {
+          formula = generateDivision();
+        } else if (opType === 'mix-mul-div') {
+          // 乘除混合
+          formula = Math.random() < 0.5
+            ? generateMultiplication()
+            : generateDivision();
         } else {
-          // 混合
-          formula = Math.random() < 0.5 
+          // 加减混合
+          formula = Math.random() < 0.5
             ? generateAddition(range, allowCarry)
             : generateSubtraction(range, allowBorrow);
         }
