@@ -162,9 +162,9 @@ if (typeof window !== 'undefined') {
         }
       }
 
-      // 将题目划分为 4 列
+      // 三数算式更长，使用 3 列避免打印溢出；其余题型沿用 4 列
       sheetGrid.innerHTML = '';
-      const colCount = 4;
+      const colCount = opType === 'three-term' ? 3 : 4;
       const itemsPerCol = Math.ceil(questions.length / colCount);
 
       for (let col = 0; col < colCount; col++) {
