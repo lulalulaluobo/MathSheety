@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert');
-const { generateAddition, generateSubtraction, generateMultiplication, generateDivision } = require('../app.js');
+const { generateAddition, generateSubtraction, generateMultiplication, generateDivision, generateThreeTerm } = require('../app.js');
 
 test('generateAddition - no carry within 20', () => {
   const results = [];
@@ -60,4 +60,27 @@ test('generateDivision - 九九表内整除无余数 (除数、商均在 1..9)',
   // 确保生成的算式不是全部为 0，测试应当能够生成一些非零数
   const hasNonZero = results.some(q => q.a > 0 || q.b > 0);
   assert.ok(hasNonZero, "Should generate non-zero equations");
+});
+
+test('generateThreeTerm - 结果不超过 20 且中间结果不为负', () => {
+  const range = 20;
+  const seenPatterns = new Set();
+  for (let i = 0; i < 100; i++) {
+    const q = generateThreeTerm(range);
+    assert.ok(q.ops && q.ops.length === 2, `ops should have two operators`);
+    seenPatterns.add(q.ops.join(''));
+
+    // 从左到右逐步运算，校验中间结果 ≥ 0 且最终结果 = res
+    let acc = q.a;
+    assert.ok(acc >= 0, `a=${q.a} should be non-negative`);
+    const steps = [q.b, q.c];
+    for (let s = 0; s < q.ops.length; s++) {
+      acc = q.ops[s] === '+' ? acc + steps[s] : acc - steps[s];
+      assert.ok(acc >= 0, `Intermediate result ${acc} < 0 for a=${q.a} ops=${q.ops} b=${q.b} c=${q.c}`);
+    }
+    assert.ok(acc <= range, `Final result ${acc} exceeds ${range}`);
+    assert.equal(acc, q.res, `Final result mismatch for a=${q.a} ops=${q.ops} b=${q.b} c=${q.c}`);
+  }
+  // 四种形式（连加/连减/加减混合 x2）应在足够样本中出现
+  assert.ok(seenPatterns.size >= 2, `Should produce multiple operation patterns, got ${[...seenPatterns]}`);
 });

@@ -50,12 +50,52 @@ function generateDivision() {
   return { a, b, op: '÷', res: q };
 }
 
+// 四种三数运算形式：连加 a+b+c、连减 a-b-c、加减混合 a+b-c、a-b+c
+const THREE_OP_PATTERNS = [
+  ['+', '+'], // 连加
+  ['-', '-'], // 连减
+  ['+', '-'], // 加减混合 (a+b-c)
+  ['-', '+']  // 加减混合 (a-b+c)
+];
+
+// 三数加减运算：最终结果 ≤ range，且按从左到右逐步运算的中间结果均 ≥ 0
+// 返回 { a, b, c, ops: ['+'|'-', '+'|'-'], res } 与两数对象区分（含 c 与 ops 字段）
+function generateThreeTerm(range, pattern) {
+  let limit = 200;
+  while (limit > 0) {
+    const a = Math.floor(Math.random() * (range + 1));
+    const b = Math.floor(Math.random() * (range + 1));
+    const c = Math.floor(Math.random() * (range + 1));
+    const ops = pattern || THREE_OP_PATTERNS[Math.floor(Math.random() * THREE_OP_PATTERNS.length)];
+
+    // 从左到右逐步运算，校验中间结果与最终结果均合法
+    let acc = a;
+    let ok = true;
+    const vals = [b, c];
+    for (let i = 0; i < ops.length; i++) {
+      if (ops[i] === '+') {
+        acc = acc + vals[i];
+      } else {
+        acc = acc - vals[i];
+      }
+      if (acc < 0) { ok = false; break; } // 中间结果不为负
+    }
+    if (ok && acc <= range) {
+      return { a, b, c, ops, res: acc };
+    }
+    limit--;
+  }
+  // 回退逻辑，防止死循环
+  return { a: 1, b: 2, c: 3, ops: ['+', '+'], res: 6 };
+}
+
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
     generateAddition,
     generateSubtraction,
     generateMultiplication,
-    generateDivision
+    generateDivision,
+    generateThreeTerm
   };
 }
 
@@ -99,6 +139,9 @@ if (typeof window !== 'undefined') {
           formula = Math.random() < 0.5
             ? generateMultiplication()
             : generateDivision();
+        } else if (opType === 'three-term') {
+          // 三数加减运算（连加/连减/加减混合四种形式随机）
+          formula = generateThreeTerm(range);
         } else {
           // 加减混合
           formula = Math.random() < 0.5
@@ -106,7 +149,10 @@ if (typeof window !== 'undefined') {
             : generateSubtraction(range, allowBorrow);
         }
 
-        const key = `${formula.a}${formula.op}${formula.b}`;
+        // 三数算式去重键含第三个操作数与两个运算符，两数算式沿用原键
+        const key = formula.ops
+          ? `${formula.a}${formula.ops[0]}${formula.b}${formula.ops[1]}${formula.c}`
+          : `${formula.a}${formula.op}${formula.b}`;
         if (!questionSet.has(key)) {
           questionSet.add(key);
           questions.push(formula);
@@ -132,9 +178,11 @@ if (typeof window !== 'undefined') {
             const q = questions[idx];
             const rowElement = document.createElement('div');
             rowElement.className = 'formula-row';
-            
-            // 对齐空格：在算式右侧保留等宽间隙
-            const expr = `${q.a} ${q.op} ${q.b}`;
+
+            // 三数算式含两个运算符；两数算式沿用单运算符格式
+            const expr = q.ops
+              ? `${q.a} ${q.ops[0]} ${q.b} ${q.ops[1]} ${q.c}`
+              : `${q.a} ${q.op} ${q.b}`;
             rowElement.innerHTML = `
               <span class="formula-expr">${expr}</span>
               <span class="formula-ans">= <span class="ans-val">${q.res}</span></span>
